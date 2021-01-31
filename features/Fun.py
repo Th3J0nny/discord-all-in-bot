@@ -1,17 +1,21 @@
-from features.FeaturesInterface import FeaturesInterface
-import discord
-import yaml
+from discord.ext import commands
+
+from Utils import *
 
 
-class Fun(FeaturesInterface):
+class Fun(commands.Cog):
 
-    @staticmethod
-    async def get_commands():
-        return ["ping"]
+    def __init__(self, bot):
+        self.bot = bot
 
-    @staticmethod
-    async def handle(client, message):
-        if client is None or message is None:
-            return
-        if message.content == "!ping":
-            await message.channel.send("pong")
+    @commands.command()
+    async def ping(self, ctx):
+        await send(ctx, 'pong')
+
+    @commands.command()
+    async def hellothere(self, ctx):
+        await send(ctx, title='General Kenobi')
+
+
+def setup(bot: commands.Bot):
+    bot.add_cog(Fun(bot))

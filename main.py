@@ -1,10 +1,11 @@
 import os
 
 from discord.ext import commands
-
+from dotenv import load_dotenv
 
 def load_features():
     print('Loading features:')
+    load_dotenv()
     base_path = os.path.join(os.path.dirname(__file__), 'features')
     files = os.listdir(base_path)
 

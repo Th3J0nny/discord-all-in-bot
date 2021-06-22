@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+        bot:
+                build: .
+                restart: unless-stopped
+                volumes:
+                        - /home/discord-all-in-bot:/home/discord-all-in-bot

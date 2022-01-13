@@ -1,4 +1,5 @@
 # All-In-Bot for Discord
+![](all-in-bot_icon.png)
 
 A simple and modular Discord bot with various functionalities.
 

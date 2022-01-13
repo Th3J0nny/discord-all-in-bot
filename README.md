@@ -68,3 +68,6 @@ here ;)
 
 - Setup logging
 - Provide CLI options, e.g., to exclude features (DONE) and ...?
+
+
+Logo: <dl><a href="https://www.flaticon.com/free-icons/robot" title="robot icons">Robot icons created by Freepik - Flaticon</a></dl>

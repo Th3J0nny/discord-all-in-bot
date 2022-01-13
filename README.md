@@ -32,7 +32,7 @@ unique name, and you're good to go.
 
 - Fun (Just some Ping Pong)
 - Math (Not nice, TODO: Replace with single command that detects and parses a regex)
-- Memes (Crawls random meme from given subreddit. Default is dankmemes)
+- Memes (Crawls random meme from given subreddit. Default is dankmemes. No NSFW!)
 - R6Stats (Crawl stats für Rainbow Six: Siege using StatsDB API) --> Needs API username and key in .env file
 
 #### Feature Ideas

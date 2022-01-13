@@ -23,6 +23,7 @@ class R6Rank(commands.Cog):
     def check_and_setup_auth(self):
         if os.getenv('STATSDB_USER_ID') and os.getenv('STATSDB_PW'):
             self.auth = (os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW'))
+            return
         raise StatsDBException("Authentication with StatsDB failed. Missing USER_ID or PW")
 
     @commands.command(name="r6rank")

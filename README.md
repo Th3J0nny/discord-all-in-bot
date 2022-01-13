@@ -32,7 +32,7 @@ unique name, and you're good to go.
 - Fun (Just some Ping Pong)
 - Math (Not nice, TODO: Replace with single command that detects and parses a regex)
 - Memes (Crawls random meme from given subreddit)
-- R6Stats (Crawl stats für Rainbow Six: Siege using StatsDB API)
+- R6Stats (Crawl stats für Rainbow Six: Siege using StatsDB API) --> Needs API username and key in .env file
 
 #### Feature Ideas
 
@@ -56,9 +56,12 @@ If your feature needs further permissions, please contact me directly or open up
 
 If you want to run the bot on your own server, you can do that as well. Remember to install
 the [requirements](requirements.txt). Also, feel free to use the minimalistic [Dockerfile](Dockerfile)
-and [docker-compose.yml](docker-compose.yml) files.
+and [docker-compose.yml](docker-compose.yml) files. Note that the docker files will assume your project's location in
+your home directory. If you have trouble with Docker, don't ask me, I'm a noob myself xD
 
-Additionally you'll need to create a Discord developer account: https://discord.com/developers
+Additionally, you'll need to create a Discord developer account: https://discord.com/developers
+The token needs to be added as TOKEN into a .env file, which you'll need to create yourself. I'm not gonna leak my stuff
+here ;)
 
 ## TODO
 

@@ -21,6 +21,7 @@ def load_features():
 
 
 if __name__ == '__main__':
+    print("Welcome to the one and only")
     print("           _ _            _____                  ____        _   ")
     print("     /\   | | |          |_   _|                |  _ \      | |  ")
     print("    /  \  | | |  ______    | |  _ __    ______  | |_) | ___ | |_ ")
@@ -30,5 +31,5 @@ if __name__ == '__main__':
 
     bot = commands.Bot(command_prefix=Storage.get_prefix)
     load_features()
-    print('Starting client')
+    print('Bot is running...')
     bot.run(os.getenv('TOKEN'))

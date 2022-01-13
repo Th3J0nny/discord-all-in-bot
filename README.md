@@ -30,8 +30,28 @@ unique name, and you're good to go.
 - Translation from any language into another
 - ...
 
+### Permissions
+
+Currently, the bot uses the following permissions (Permission Integer: 274878154752):
+
+- Send Messages
+- Send Messages in Threads
+- Embed Links
+- Attach Files
+- Read Message History
+- Mention Everyone
+
+If your feature needs further permissions, please contact me directly or open up an issue.
+
 ## Deployment
 
 If you want to run the bot on your own server, you can do that as well. Remember to install
 the [requirements](requirements.txt). Also, feel free to use the minimalistic [Dockerfile](Dockerfile)
 and [docker-compose.yml](docker-compose.yml) files.
+
+Additionally you'll need to create a Discord developer account: https://discord.com/developers
+
+## TODO
+
+- Setup logging
+- Provide CLI options, e.g., to exclude features

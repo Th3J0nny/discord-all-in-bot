@@ -37,6 +37,7 @@ unique name, and you're good to go.
 #### Feature Ideas
 
 - Translation from any language into another
+- Improve help command
 - ...
 
 ### Permissions

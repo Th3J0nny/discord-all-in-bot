@@ -69,7 +69,7 @@ here ;)
 
 - Setup logging
 - Provide CLI options, e.g., to exclude features (DONE) and ...?
-- Add docs for [utility/Storage.py](Storage class)
+- Add docs for [Storage class](utility/Storage.py)
 
 
 Logo: <dl><a href="https://www.flaticon.com/free-icons/robot" title="robot icons">Robot icons created by Freepik - Flaticon</a></dl>

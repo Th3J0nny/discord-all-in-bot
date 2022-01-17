@@ -1,7 +1,7 @@
 from discord.ext import commands
 
-from Utility import Storage
-from Utility.Utils import *
+from utility import Storage
+from utility.Utils import *
 
 steps = dict()
 

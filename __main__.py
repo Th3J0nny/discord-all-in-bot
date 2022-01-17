@@ -4,7 +4,7 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from Utility import Storage
+from utility import Storage
 
 
 def load_features():

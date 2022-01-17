@@ -2,7 +2,7 @@ import random
 
 from discord.ext import commands
 
-from Utility.Utils import *
+from utility.Utils import *
 
 
 # TODO: Maybe replace this by simple !math cmd and using regex to detect math problem

@@ -4,7 +4,7 @@ import os
 import requests
 from discord.ext import commands
 
-from Utility.Utils import *
+from utility.Utils import *
 
 
 class StatsDBException(Exception):

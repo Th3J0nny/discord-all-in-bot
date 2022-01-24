@@ -1,11 +1,16 @@
+from time import monotonic
+
 from discord.ext import commands
 
 from utility import Storage
 from utility.Utils import *
 
-from time import monotonic 
-
 steps = dict()
+
+
+def is_owner(message):
+    return message.author.id == message.guild.owner_id
+
 
 # A class that tracks how long someone spends alone in a voice channel
 class Alone(commands.Cog):
@@ -14,12 +19,11 @@ class Alone(commands.Cog):
         self.bot = bot
         self.users_alone = dict()
 
-    # Receive the command !test like this
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # read config and skip if feature is disabled
-        alone_enabled = Storage.read(member.guild.id, "alone_enabled")
-        if alone_enabled is None or ! bool(alone_enabled):
+        alone_enabled = bool(Storage.read(member.guild.id, "alone_enabled"))
+        if alone_enabled is None or not bool(alone_enabled):
             return
 
         # check nature of state update
@@ -46,9 +50,8 @@ class Alone(commands.Cog):
                         # channel not available
                         return
 
-                    send(channel, description="User {} spent {} alone in a voice channel".format(member.guild.get_member(lonely_person).display_name, duration))
-
-
+                    await send(channel, description="User {} spent {} alone in a voice channel".format(
+                        member.guild.get_member(lonely_person).display_name, duration))
 
         elif before.channel is not None and after.channel is None:
             # left channel
@@ -65,14 +68,14 @@ class Alone(commands.Cog):
                         # channel not available
                         return
 
-                    send(channel, description="User {} spent {} alone in a voice channel".format(member.display_name, duration))
-
-
+                    await send(channel,
+                               description="User {} spent {} alone in a voice channel".format(member.display_name,
+                                                                                              duration))
 
     @commands.command(name='change-alone', aliases=['changealone'])
     async def change_alone(self, ctx, arg1):
         if is_owner(ctx):
-            Storage.write(ctx.guild.id, bool(arg1))
+            Storage.write(ctx.guild.id, "alone_enabled", arg1)
             await send(ctx, description="Command Alone status successfully set to {}.".format(bool(arg1)))
         else:
             await send_error(ctx, description="Insufficient permissions. Please ask the server owner")

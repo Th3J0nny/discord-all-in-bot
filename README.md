@@ -34,6 +34,7 @@ unique name, and you're good to go.
 - Math (Not nice, TODO: Replace with single command that detects and parses a regex)
 - Memes (Crawls random meme from given subreddit. Default is dankmemes. No NSFW!)
 - R6Stats (Crawl stats für Rainbow Six: Siege using StatsDB API) --> Needs API username and key in .env file
+- Alone (Detects and exposes when and how long a user was alone in a voice channel)
 
 #### Feature Ideas
 

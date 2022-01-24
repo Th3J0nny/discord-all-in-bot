@@ -11,14 +11,20 @@ steps = dict()
 def is_owner(message):
     return message.author.id == message.guild.owner_id
 
+
 # defines the text to send on loneliness detection
 async def send_static(member, duration):
-    channel = Storage.read(member.guild.id, "default_channel")
-    if channel is None:
-        channel = member.guild.system_channel
+    channel_name = Storage.read(member.guild.id, "default_channel")
+    channel = member.guild.system_channel
+    if channel_name:
+        channels = await member.guild.fetch_channels()
+        for c in channels:
+            if c.name == channel_name:
+                channel = c
+                break
 
-    await send(channel, description="{} spent {} seconds alone in a voice channel.".format(member.display_name,
-                                                                                          duration))
+    await send(channel, description="{} spent {:.2f} seconds alone in a voice channel.".format(member.display_name,
+                                                                                               duration))
 
 
 # A class that tracks how long someone spends alone in a voice channel
@@ -36,12 +42,12 @@ class Alone(commands.Cog):
             # feature not enabled, early exit
             return
 
+        if before.channel is not None:
+            await self.check_source_channel(before.channel, member)
+
         # check nature of state update
         if after.channel is not None:
-            self.check_target_channel(after.channel, member)
-
-        if before.channel is not None:
-            self.check_source_channel(before.channel, member)
+            await self.check_target_channel(after.channel, member)
 
     async def check_source_channel(self, channel, member):
         # left channel
@@ -62,7 +68,7 @@ class Alone(commands.Cog):
             self.users_alone[member.id] = monotonic()
         elif len(channel.members) == 2:
             # somebody joined channel where somebody was alone before
-            inters = set(after.channel.members).intersection(set(self.users_alone.keys()))
+            inters = set(channel.members).intersection(set(self.users_alone.keys()))
             # check if we 
             if len(inters) > 1:
                 # unambiguous result
@@ -75,13 +81,24 @@ class Alone(commands.Cog):
 
                 await send_static(member, duration)
 
-
-
-    @commands.command(name='change-alone', aliases=['changealone'])
-    async def change_alone(self, ctx, arg1):
+    @commands.command(name='alone-status', aliases=['alonestatus'])
+    async def alone_status(self, ctx, arg1):
         if is_owner(ctx):
             Storage.write(ctx.guild.id, "alone_enabled", arg1)
             await send(ctx, description="Command Alone status successfully set to {}.".format(bool(arg1)))
+        else:
+            await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
+
+    @commands.command(name='alone-channel', aliases=['alonechannel'])
+    async def alone_channel(self, ctx, arg1):
+        if is_owner(ctx):
+            try:
+                channel = await commands.TextChannelConverter().convert(ctx, arg1)
+                Storage.write(ctx.guild.id, "default_channel", channel.name)
+                await send(ctx, description="Default channel successfully set to {}.".format(channel.name))
+                return
+            except commands.ChannelNotFound:
+                await send_error(ctx, description="Target default channel does not exist.")
         else:
             await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
 

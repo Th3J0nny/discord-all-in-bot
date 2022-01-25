@@ -25,7 +25,7 @@ class Setup(commands.Cog):
             else:
                 await send_error(ctx, description="Alias cannot be empty.")
         else:
-            await send_error(ctx, description="Insufficient permissions. Please ask the server owner")
+            await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
 
 
 def setup(bot: commands.Bot):

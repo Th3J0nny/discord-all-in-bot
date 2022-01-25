@@ -1,6 +1,7 @@
 import argparse
 import os
 
+import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -40,7 +41,9 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
     excluded_features = [name.lower() for name in args['exclude_features']]
 
-    bot = commands.Bot(command_prefix=Storage.get_prefix)
+    intents = discord.Intents.default()
+    intents.voice_states = True
+    bot = commands.Bot(command_prefix=Storage.get_prefix, intents=intents)
     load_features()
     print('Bot is running...')
     bot.run(os.getenv('TOKEN'))

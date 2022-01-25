@@ -14,6 +14,9 @@ def is_owner(message):
 
 # defines the text to send on loneliness detection
 async def send_static(member, duration):
+    threshold = Storage.read(member.guild.id, "duration")
+    if threshold and duration < int(threshold):
+        return
     channel_name = Storage.read(member.guild.id, "default_channel")
     channel = member.guild.system_channel
     if channel_name:
@@ -46,7 +49,7 @@ def float_to_time(duration):
 async def check_from_empty_to_empty(source, target):
     if source is None or target is None:
         return False
-    elif len(source.members) == 0 and len(target.members == 1):
+    elif len(source.members) == 0 and len(target.members) == 1:
         return True
     else:
         return False
@@ -86,7 +89,7 @@ class Alone(commands.Cog):
             if member.id in set(self.users_alone):
                 duration = monotonic() - self.users_alone.pop(member.id)
 
-                if not sendmsg:
+                if sendmsg:
                     return
                 await send_static(member, duration)
 
@@ -97,20 +100,21 @@ class Alone(commands.Cog):
             self.users_alone[member.id] = monotonic()
         elif len(channel.members) == 2:
             # somebody joined channel where somebody was alone before
-            inters = set(channel.members).intersection(set(self.users_alone.keys()))
+            inters = [i for i in channel.members if i.id in self.users_alone.keys()]
+            # inters = set(channel.members).intersection(set(self.users_alone.keys()))
             # check if we 
             if len(inters) > 1:
                 # unambiguous result
-                for member_id in inters:
-                    del self.users_alone[member_id]
+                for member in inters:
+                    del self.users_alone[member.id]
             elif len(inters) == 1:
                 # we have an exact record
                 lonely_person = inters.pop()
-                duration = monotonic() - self.users_alone.pop(lonely_person)
+                duration = monotonic() - self.users_alone.pop(lonely_person.id)
 
-                if not sendmsg:
+                if sendmsg:
                     return
-                await send_static(member, duration)
+                await send_static(lonely_person, duration)
 
     @commands.command(name='alone-status', aliases=['alonestatus'])
     async def alone_status(self, ctx, arg1):
@@ -130,6 +134,23 @@ class Alone(commands.Cog):
                 return
             except commands.ChannelNotFound:
                 await send_error(ctx, description="Target default channel does not exist.")
+        else:
+            await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
+
+    @commands.command(name='alone-duration', aliases=['aloneduration'])
+    async def alone_duration(self, ctx, arg1):
+        if is_owner(ctx):
+            try:
+                dur = int(arg1)
+                if dur < 0:
+                    await send_error(ctx, description="Number must be greater or equal 0.")
+                    return
+                Storage.write(ctx.guild.id, "duration", str(dur))
+                await send(ctx, description="Only sending message when the person was in the channel alone for more "
+                                            "than {} seconds.".format(dur))
+                return
+            except ValueError:
+                await send_error(ctx, description="Invalid number. Please provide the duration in seconds.")
         else:
             await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
 

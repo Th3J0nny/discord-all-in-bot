@@ -26,6 +26,7 @@ async def send_static(member, duration):
     await send(channel, description="{} spent {} alone in a voice channel.".format(member.display_name,
                                                                                    float_to_time(duration)))
 
+
 def float_to_time(duration):
     # because of monotonic clock, negative values may lead to unexpected behaviour
     # format only up to hours
@@ -35,11 +36,18 @@ def float_to_time(duration):
     if duration > 3600:
         fmted += str(int(duration // 3600)) + " hours "
     if duration > 60:
-        fmted += str(int(duration // 60 ) % 60) + " minutes "
+        fmted += str(int(duration // 60) % 60) + " minutes "
 
     fmted += "{:.2f}".format(duration % 60) + " seconds"
 
     return fmted
+
+
+async def check_from_empty_to_empty(source, target):
+    if len(source.members) == 0 and len(target.members == 1):
+        return True
+    else:
+        return False
 
 
 # A class that tracks how long someone spends alone in a voice channel
@@ -65,13 +73,6 @@ class Alone(commands.Cog):
         # check nature of state update
         if after.channel is not None:
             await self.check_target_channel(after.channel, member, sendmsg)
-
-
-    async def check_from_empty_to_empty(self, source, target):
-        if len(source.members) == 0 && len(target.members == 1):
-            return True
-        else:
-            return False
 
     async def check_source_channel(self, channel, member, sendmsg):
         # left channel

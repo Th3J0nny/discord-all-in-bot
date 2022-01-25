@@ -44,7 +44,9 @@ def float_to_time(duration):
 
 
 async def check_from_empty_to_empty(source, target):
-    if len(source.members) == 0 and len(target.members == 1):
+    if source is None or target is None:
+        return False
+    elif len(source.members) == 0 and len(target.members == 1):
         return True
     else:
         return False

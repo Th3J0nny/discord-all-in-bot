@@ -1,3 +1,4 @@
+import distutils.util
 from time import monotonic
 
 from discord.ext import commands
@@ -119,8 +120,12 @@ class Alone(commands.Cog):
     @commands.command(name='alone-status', aliases=['alonestatus'])
     async def alone_status(self, ctx, arg1):
         if is_owner(ctx):
-            Storage.write(ctx.guild.id, "alone_enabled", arg1)
-            await send(ctx, description="Command Alone status successfully set to {}.".format(bool(arg1)))
+            try:
+                b = distutils.util.strtobool(arg1)
+                Storage.write(ctx.guild.id, "alone_enabled", str(b))
+                await send(ctx, description="Command Alone status successfully set to {}.".format(arg1))
+            except ValueError:
+                await send_error(ctx, description="Invalid value.")
         else:
             await send_error(ctx, description="Insufficient permissions. Please ask the server owner.")
 

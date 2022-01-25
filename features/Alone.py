@@ -23,8 +23,8 @@ async def send_static(member, duration):
                 channel = c
                 break
 
-    await send(channel, description="{} spent {} seconds alone in a voice channel.".format(member.display_name,
-                                                                                               float_to_time(duration)))
+    await send(channel, description="{} spent {} alone in a voice channel.".format(member.display_name,
+                                                                                   float_to_time(duration)))
 
 def float_to_time(duration):
     # because of monotonic clock, negative values may lead to unexpected behaviour

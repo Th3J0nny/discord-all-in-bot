@@ -23,8 +23,23 @@ async def send_static(member, duration):
                 channel = c
                 break
 
-    await send(channel, description="{} spent {:.2f} seconds alone in a voice channel.".format(member.display_name,
-                                                                                               duration))
+    await send(channel, description="{} spent {} seconds alone in a voice channel.".format(member.display_name,
+                                                                                               float_to_time(duration)))
+
+def float_to_time(duration):
+    # because of monotonic clock, negative values may lead to unexpected behaviour
+    # format only up to hours
+
+    fmted = ""
+
+    if duration > 3600:
+        fmted += str(int(duration // 3600)) + " hours "
+    if duration > 60:
+        fmted += str(int(duration // 60 ) % 60) + " minutes "
+
+    fmted += "{:.2f}".format(duration % 60) + " seconds"
+
+    return fmted
 
 
 # A class that tracks how long someone spends alone in a voice channel
@@ -42,14 +57,23 @@ class Alone(commands.Cog):
             # feature not enabled, early exit
             return
 
+        sendmsg = await check_from_empty_to_empty(before.channel, after.channel)
+
         if before.channel is not None:
-            await self.check_source_channel(before.channel, member)
+            await self.check_source_channel(before.channel, member, sendmsg)
 
         # check nature of state update
         if after.channel is not None:
-            await self.check_target_channel(after.channel, member)
+            await self.check_target_channel(after.channel, member, sendmsg)
 
-    async def check_source_channel(self, channel, member):
+
+    async def check_from_empty_to_empty(self, source, target):
+        if len(source.members) == 0 && len(target.members == 1):
+            return True
+        else:
+            return False
+
+    async def check_source_channel(self, channel, member, sendmsg):
         # left channel
         if len(channel.members) == 1:
             # member left, so somebody is alone now
@@ -59,9 +83,11 @@ class Alone(commands.Cog):
             if member.id in set(self.users_alone):
                 duration = monotonic() - self.users_alone.pop(member.id)
 
+                if not sendmsg:
+                    return
                 await send_static(member, duration)
 
-    async def check_target_channel(self, channel, member):
+    async def check_target_channel(self, channel, member, sendmsg):
         # joined channel
         if len(channel.members) == 1:
             # joined an empty channel
@@ -79,6 +105,8 @@ class Alone(commands.Cog):
                 lonely_person = inters.pop()
                 duration = monotonic() - self.users_alone.pop(lonely_person)
 
+                if not sendmsg:
+                    return
                 await send_static(member, duration)
 
     @commands.command(name='alone-status', aliases=['alonestatus'])

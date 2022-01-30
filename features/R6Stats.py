@@ -26,7 +26,7 @@ class R6Rank(commands.Cog):
             return
         raise StatsDBException("Authentication with StatsDB failed. Missing USER_ID or PW")
 
-    @commands.command(name="r6rank")
+    @commands.command(name="r6rank", description ="gets the rank of player")
     async def r6rank(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -43,7 +43,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6kd")
+    @commands.command(name="r6kd", description ="gets the KD of player")
     async def r6kd(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -63,7 +63,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6wl")
+    @commands.command(name="r6wl", description ="gets the win-loss record of player")
     async def r6wl(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -83,7 +83,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6operatorkd")
+    @commands.command(name="r6operatorkd", description ="gets the kill death ratio of player when using a certain operator")
     async def r6operatorkd(self, ctx, arg1, arg2):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -107,7 +107,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6kdseasonal")
+    @commands.command(name="r6kdseasonal", description ="gets the kill death ratio of a player during the current season")
     async def r6kdseasonal(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -127,7 +127,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6wlseasonal")
+    @commands.command(name="r6wlseasonal" description ="gets the winn loss record of a player during the current season")
     async def r6wlseasonal(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -147,7 +147,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6operatorwl")
+    @commands.command(name="r6operatorwl", description ="gets the win loss record of a player when using a certain operator")
     async def r6operatorwl(self, ctx, arg1, arg2):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -171,7 +171,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6playtime")
+    @commands.command(name="r6playtime", description = "gets the total play time of a player on R6")
     async def r6playtime(self, ctx, arg1):
         r = requests.get(self.base_url.format(arg1), auth=(os.getenv('STATSDB_USER_ID'), os.getenv('STATSDB_PW')))
         if r.status_code == 200:
@@ -186,7 +186,7 @@ class R6Rank(commands.Cog):
         else:
             await send_error(ctx.channel, description="Something went wrong.")
 
-    @commands.command(name="r6canweq")
+    @commands.command(name="r6canweq", description="lets player know if they can queue")
     async def r6canweq(self, ctx, *args):
         if len(args) == 1:
             await send(ctx, description="Yes, you can queue alone Kappa")

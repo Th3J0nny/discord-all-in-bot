@@ -14,7 +14,7 @@ class Memes(commands.Cog):
         self.bot = bot
 
     # FIXME: Fetching same memes sometimes
-    @commands.command(name="meme")
+    @commands.command(name="meme", description = "sends a meme that is not 18+")
     async def meme(self, ctx, arg1='dankmemes'):
         r = requests.get("https://www.reddit.com/r/{}.json?sort=top&t=year".format(arg1),
                          headers={'User-agent': 'All-In-Discord-Bot'})
